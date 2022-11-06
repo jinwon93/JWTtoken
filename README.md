@@ -1,12 +1,3 @@
-# tokenTest
-공부용으로 작성된 코드입니다!
-
-자세한 설명은 아래의 링크를 참고해주세요.
-
-👉 https://joanaup.tistory.com/entry/Spring-boot-JWT-RefreshToken-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
-
-부족한 코드 입니다 PR 해주시면 감사합니다 🥰
-
 ### Test - POSTMAN
 
 ---
