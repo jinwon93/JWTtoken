@@ -4,6 +4,7 @@ package com.token.commons.Jwt;
 import com.token.domains.users.domain.UsersEntity;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -13,8 +14,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class TokenUtils {
 
   private final String SECRET_KEY = "secretKey";
@@ -44,37 +48,37 @@ public class TokenUtils {
 
 
   public boolean isValidToken(String token) {
-    System.out.println("isValidToken is : " +token);
+    log.info("isValidToken is : " +token);
     try {
       Claims accessClaims = getClaimsFormToken(token);
-      System.out.println("Access expireTime: " + accessClaims.getExpiration());
-      System.out.println("Access userId: " + accessClaims.get("userId"));
+      log.info("Access expireTime: " + accessClaims.getExpiration());
+      log.info("Access userId: " + accessClaims.get("userId"));
       return true;
     } catch (ExpiredJwtException exception) {
-      System.out.println("Token Expired UserID : " + exception.getClaims().getSubject());
+      log.info("Token Expired UserID : " + exception.getClaims().getSubject());
       return false;
     } catch (JwtException exception) {
-      System.out.println("Token Tampered");
+      log.info("Token Tampered");
       return false;
     } catch (NullPointerException exception) {
-      System.out.println("Token is null");
+      log.info("Token is null");
       return false;
     }
   }
   public boolean isValidRefreshToken(String token) {
     try {
       Claims accessClaims = getClaimsToken(token);
-      System.out.println("Access expireTime: " + accessClaims.getExpiration());
-      System.out.println("Access userId: " + accessClaims.get("userId"));
+      log.info("Access expireTime: " + accessClaims.getExpiration());
+      log.info("Access userId: " + accessClaims.get("userId"));
       return true;
     } catch (ExpiredJwtException exception) {
-      System.out.println("Token Expired UserID : " + exception.getClaims().getSubject());
+      log.info("Token Expired UserID : " + exception.getClaims().getSubject());
       return false;
     } catch (JwtException exception) {
-      System.out.println("Token Tampered");
+      log.info("Token Tampered");
       return false;
     } catch (NullPointerException exception) {
-      System.out.println("Token is null");
+      log.info("Token is null");
       return false;
     }
   }

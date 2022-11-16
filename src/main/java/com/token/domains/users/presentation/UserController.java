@@ -23,6 +23,12 @@ public class UserController {
 
   private final UserService userService;
 
+
+  @GetMapping("/test/hellow")
+  public  String test() {
+
+    return  "Hellow World";
+  }
   @ApiOperation(value = "회원가입" , response = UsersEntity.class)
   @PostMapping("/user/signUp")
   public ResponseEntity signUp(@RequestBody UserRequest userRequest) {
