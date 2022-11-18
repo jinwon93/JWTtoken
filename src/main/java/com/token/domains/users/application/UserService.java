@@ -8,10 +8,13 @@ import com.token.domains.users.application.dto.UserRequest;
 import com.token.domains.users.domain.UsersEntity;
 import com.token.domains.users.domain.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.security.SecurityUtil;
+import org.h2.engine.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +79,13 @@ public class UserService {
 
     return TokenResponse.builder().ACCESS_TOKEN(accessToken).REFRESH_TOKEN(refreshToken).build();
   }
+
+//  public UserRequest changeUserPassword(String userId , String exPw , String newPW) {
+//      Optional<UsersEntity> users = usersRepository.findByUserId(userId);
+//
+//      users.orElseThrow().setPw(passwordEncoder.encode(newPW));
+//
+//  }
 
   public List<UsersEntity> findUsers() {
     return usersRepository.findAll();

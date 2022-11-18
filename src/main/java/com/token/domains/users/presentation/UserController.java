@@ -24,11 +24,6 @@ public class UserController {
   private final UserService userService;
 
 
-  @GetMapping("/test/hellow")
-  public  String test() {
-
-    return  "Hellow World";
-  }
   @ApiOperation(value = "회원가입" , response = UsersEntity.class)
   @PostMapping("/user/signUp")
   public ResponseEntity signUp(@RequestBody UserRequest userRequest) {
@@ -39,14 +34,14 @@ public class UserController {
 
 
   @ApiOperation(value = "로그인" , response = UsersEntity.class)
-  @PostMapping("/user/signIn")
+  @PostMapping("/user/login")
   public ResponseEntity<TokenResponse> signIn(@RequestBody UserRequest userRequest) throws Exception {
 
     return ResponseEntity.ok().body(userService.signIn(userRequest));
   }
 
   @ApiOperation(value = "회원정보" , response = UsersEntity.class)
-  @GetMapping("/info")
+  @GetMapping("/user/info")
   public ResponseEntity<List<UsersEntity>> findUser() {
     return ResponseEntity.ok().body(userService.findUsers());
   }

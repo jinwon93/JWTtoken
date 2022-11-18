@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @Entity
 @NoArgsConstructor
+@Builder
 public class UsersEntity {
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,9 @@ public class UsersEntity {
   private String pw;
 
 
-
+  public void setPw(String pw) {
+    this.pw = pw;
+  }
   @Enumerated(EnumType.STRING)
   private Authority authority;
 
