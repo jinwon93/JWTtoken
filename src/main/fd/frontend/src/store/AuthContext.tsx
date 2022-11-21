@@ -8,7 +8,7 @@ import * as authAction from  './AuthAction';
 let logoutTimer : NodeJS.Timeout;
 
 
-type  Props  = {chidren?:React.ReactNode}
+type Props = {children?: React.ReactNode }
 type UserInfo = { userId : string};
 type LoginToken ={
 
@@ -127,7 +127,7 @@ export  const AuthContextProvider:React.FC<Props> = (props) => {
     return (
 
         <AuthContext.Provider value={contextValue} >
-            {props.chidren}
+            {props.children}
         </AuthContext.Provider>
     )
  }
