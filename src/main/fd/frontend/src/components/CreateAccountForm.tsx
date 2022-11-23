@@ -1,7 +1,8 @@
 import React  ,{ useState  , useRef , useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
-import classes from "*.module.css";
+
+
 
 const CreateAccountForm = () => {
 
@@ -28,18 +29,18 @@ const CreateAccountForm = () => {
     }
 
     return (
-        <section className={classes.auth}>
+        <section className="">
             <h1>Create Account</h1>
             <form onSubmit={submitHandler}>
-                <div className={classes.control}>
+                <div className="">
                     <label htmlFor="userId">Your ID</label>
                     <input type="text" id="userId" required ref={userIdInputRef} />
                 </div>
-                <div className={classes.control}>
+                <div className="">
                     <label htmlFor="password">Your password</label>
                     <input type="password" id="password" required ref={userIdInputRef} />
                 </div>
-                <div className={classes.aactions}>
+                <div className="">
                     <button type="submit">Submit</button>
                 </div>
             </form>
