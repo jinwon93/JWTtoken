@@ -1,4 +1,4 @@
-package com.token.domains.users.domain.entity;
+package com.token.domains.article.entity;
 
 
 import com.token.domains.users.domain.UsersEntity;
@@ -7,10 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -41,6 +38,8 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UsersEntity users;
+
+
 
 
     public static Article createArticle(String title , String body , UsersEntity users) {
