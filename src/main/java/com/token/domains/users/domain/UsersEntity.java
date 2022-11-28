@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
-@Table(name = "users")
 @Entity
 @NoArgsConstructor
 @Builder
@@ -27,18 +27,32 @@ public class UsersEntity {
   private String password;
 
 
-  public void setPw(String pw) {
-    this.password = password;
-  }
+  @Column(nullable = false)
+  private String nickname;
+
+
+
   @Enumerated(EnumType.STRING)
   private Authority authority;
 
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
+
   @Builder
-  public UsersEntity(Long id  ,String userId, String password  , Authority authority) {
+  public UsersEntity(Long id  ,String userId, String password  , String nickname ,  Authority authority) {
 
     this.id = id;
     this.userId = userId;
     this.password = password;
+    this.nickname = nickname;
     this.authority = authority;
   }
 }

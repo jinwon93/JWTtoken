@@ -2,6 +2,7 @@ package com.token.commons.Jwt;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtTokenInterceptor implements HandlerInterceptor {
 
   private final TokenUtils tokenUtils;
@@ -19,11 +21,11 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws IOException {
 
-    System.out.println("JwtToken 호출");
+    log.info("JwtToken 호출");
     String accessToken = request.getHeader("ACCESS_TOKEN");
-    System.out.println("AccessToken:" + accessToken);
+    log.info("AccessToken:" + accessToken);
     String refreshToken = request.getHeader("REFRESH_TOKEN");
-    System.out.println("RefreshToken:" + refreshToken);
+    log.info("RefreshToken:" + refreshToken);
 
     if (accessToken != null) {
       if (tokenUtils.isValidToken(accessToken)) {

@@ -19,8 +19,8 @@ function App() {
         <Layout>
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/signup" element={authCtx.isLoggedIn ? <Navigate to='/'/> : <CreateAccountPage />} />
-                <Route path="/login/*"
+                <Route path="/user/signUp" element={authCtx.isLoggedIn ? <Navigate to='/'/> : <CreateAccountPage />} />
+                <Route path="/user/login/*"
                        element={authCtx.isLoggedIn ? <Navigate to='/' /> : <AuthPage /> } />
 
             </Routes>

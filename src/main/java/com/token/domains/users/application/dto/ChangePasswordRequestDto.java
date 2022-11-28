@@ -12,7 +12,7 @@ public class ChangePasswordRequestDto {
 
 
     private String userId;
-    private String exPw;
-    private String newPW;
+    private String exPassword;
+    private String newPassword;
 
 }

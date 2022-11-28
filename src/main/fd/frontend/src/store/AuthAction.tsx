@@ -78,3 +78,9 @@ export const getUserActionHandler =  (token:string) => {
     return response;
 };
 
+// export const changeNicknameActionHandler = ( nickname : string , token : string) => {
+//
+//     const URL = "";
+//     const changeNicknameObj =  { nickname };
+//     const
+// }

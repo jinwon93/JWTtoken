@@ -19,7 +19,7 @@ public class UserRequest {
    public UsersEntity toUsers(PasswordEncoder passwordEncoder) {
       return UsersEntity.builder()
               .userId(userId)
-              .pw(passwordEncoder.encode(userPw))
+              .password(passwordEncoder.encode(userPw))
               .authority(Authority.ROLE_USER)
               .build();
    }

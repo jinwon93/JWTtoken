@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Getter
 @RequiredArgsConstructor
-@Table(name = "auth")
 @Entity
 public class AuthEntity {
 

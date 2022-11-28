@@ -5,16 +5,14 @@ import com.token.domains.auth.domain.AuthEntity;
 import com.token.domains.auth.domain.AuthRepository;
 import com.token.domains.users.application.dto.TokenResponse;
 import com.token.domains.users.application.dto.UserRequest;
+import com.token.domains.users.application.dto.UsersResponseDto;
 import com.token.domains.users.domain.UsersEntity;
-import com.token.domains.users.domain.UsersRepository;
+import com.token.domains.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.security.SecurityUtil;
-import org.h2.engine.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,12 +29,21 @@ public class UserService {
     return usersRepository.findByUserId(userId);
   }
 
+
+
+  @Transactional
+  public UsersResponseDto changeUserNickname (String userId , String nickname) {
+    UsersEntity users = usersRepository.findByUserId(userId).orElseThrow( ()  -> new RuntimeException("로그인 유저 정보가 없습니다"));
+      users.setNickname(nickname);
+      return UsersResponseDto.of(usersRepository.save(users));
+  }
+
   @Transactional
   public TokenResponse signUp(UserRequest userRequest) {
     UsersEntity usersEntity =
         usersRepository.save(
             UsersEntity.builder()
-                .pw(passwordEncoder.encode(userRequest.getUserPw()))
+                .password(passwordEncoder.encode(userRequest.getUserPw()))
                 .userId(userRequest.getUserId())
                 .build());
 
@@ -59,7 +66,7 @@ public class UserService {
         authRepository
             .findByUsersEntityId(usersEntity.getId())
             .orElseThrow(() -> new IllegalArgumentException("Token 이 존재하지 않습니다."));
-    if (!passwordEncoder.matches(userRequest.getUserPw(), usersEntity.getPw())) {
+    if (!passwordEncoder.matches(userRequest.getUserPw(), usersEntity.getPassword())) {
       throw new Exception("비밀번호가 일치하지 않습니다.");
     }
     String accessToken = "";
