@@ -46,10 +46,10 @@ export const retrieveStoredToken = () => {
     }
 }
 
-export const signupActionHandler = (userId:string , pw : string) => {
+export const signupActionHandler = (userId:string , password : string , nickname : string) => {
 
     const URL =  '/user/signUp'
-    const signupObject = { userId , pw} ;
+    const signupObject = { userId , password , nickname} ;
 
     const response = POST(URL , signupObject , {});
     return response;
@@ -78,9 +78,26 @@ export const getUserActionHandler =  (token:string) => {
     return response;
 };
 
-// export const changeNicknameActionHandler = ( nickname : string , token : string) => {
-//
-//     const URL = "";
-//     const changeNicknameObj =  { nickname };
-//     const
-// }
+export const changeNicknameActionHandler = ( nickname : string , token : string) => {
+
+    const URL = "";
+    const changeNicknameObj =  { nickname };
+    const response  = POST(URL , changeNicknameObj , createTokenHeader(token));
+
+    return response;
+}
+
+
+export const changePasswordActionHandler = (
+
+
+    exPassword : string ,
+    newPssword : string ,
+    token : string
+)  => {
+
+    const URL = "";
+    const changePasswordObj = {exPassword , newPssword }
+    const response = POST(URL , changePasswordObj , createTokenHeader(token));
+    return response;
+}

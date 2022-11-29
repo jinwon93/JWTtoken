@@ -9,7 +9,7 @@ let logoutTimer : NodeJS.Timeout;
 
 
 type Props = {children?: React.ReactNode }
-type UserInfo = { userId : string};
+type UserInfo = { userId : string , nickname : string};
 type LoginToken ={
 
     grantType : string,
@@ -24,10 +24,13 @@ const AuthContext = React.createContext({
     isLoggedIn : false ,
     isSuccess : false,
     isGetSuccess :false ,
-    signup : (userId : string , password : string) => {},
+    signup : (userId : string , password : string ,nickname : string) => {},
     login :  (userId :string , password :string) => {},
     logout : () => {},
-    getUser : () => {}
+    getUser : () => {},
+    changeNickname : (nickname :string) => {},
+    changePassword : (exPassword : string , newPassword : string) => {}
+
 });
 
 
@@ -52,9 +55,9 @@ export  const AuthContextProvider:React.FC<Props> = (props) => {
 
     const userIsLoggedIn = !!token;
 
-    const signupHandler = (userId : string , password : string) => {
+    const signupHandler = (userId : string , password : string , nickname : string) => {
         setIsSuccess(false);
-        const response = authAction.signupActionHandler(userId ,  password);
+        const response = authAction.signupActionHandler(userId ,  password , nickname);
 
         response.then((result) => {
             if (result !== null) {
@@ -102,6 +105,32 @@ export  const AuthContextProvider:React.FC<Props> = (props) => {
         })
     }
 
+    const changeNicknameHandler = (nickname: string) => {
+        setIsSuccess(false);
+
+        const data = authAction.changeNicknameActionHandler(nickname , token);
+        data.then((result) =>{
+            if (result !== null) {
+                const userData:UserInfo = result.data;
+                setUserObj(userData);
+                setIsSuccess(true);
+            }
+        });
+    };
+
+
+    const changePasswordHandler = (exPassword : string , newPassword : string) => {
+
+        setIsSuccess(false);
+        const data = authAction.changePasswordActionHandler(exPassword , newPassword , token);
+        data.then((result) =>{
+
+            if (result != null) {
+                setIsSuccess(true);
+                logoutHandler();
+            }
+        });
+    };
 
     useEffect(() => {
 
@@ -120,7 +149,9 @@ export  const AuthContextProvider:React.FC<Props> = (props) => {
         signup : signupHandler,
         login : loginHandler,
         logout : logoutHandler,
-        getUser : getUserHandler
+        getUser : getUserHandler ,
+        changeNickname : changeNicknameHandler,
+        changePassword : changePasswordHandler
 
     }
 
