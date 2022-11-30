@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
@@ -14,15 +15,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Builder
 public class UserRequest {
    private String userId;
-   private String userPw;
+   private String userPassword;
+   private String nickname;
 
    public UsersEntity toUsers(PasswordEncoder passwordEncoder) {
       return UsersEntity.builder()
               .userId(userId)
-              .password(passwordEncoder.encode(userPw))
+              .password(passwordEncoder.encode(userPassword))
+              .nickname(nickname)
               .authority(Authority.ROLE_USER)
               .build();
    }
 
+
+   public UsernamePasswordAuthenticationToken toAuthentication() {
+      return  new UsernamePasswordAuthenticationToken(userId , userPassword);
+   }
 
 }

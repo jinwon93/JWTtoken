@@ -1,101 +1,48 @@
 package com.token.domains.users.application;
 
-import com.token.commons.Jwt.TokenUtils;
-import com.token.domains.auth.domain.AuthEntity;
-import com.token.domains.auth.domain.AuthRepository;
-import com.token.domains.users.application.dto.TokenResponse;
-import com.token.domains.users.application.dto.UserRequest;
+
 import com.token.domains.users.application.dto.UsersResponseDto;
 import com.token.domains.users.domain.UsersEntity;
 import com.token.domains.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
-  private final UsersRepository usersRepository;
-  private final TokenUtils tokenUtils;
-  private final AuthRepository authRepository;
-  private final PasswordEncoder passwordEncoder;
 
-  public Optional<UsersEntity> findByUserId(String userId) {
 
-    return usersRepository.findByUserId(userId);
-  }
+    private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
 
-  @Transactional
-  public UsersResponseDto changeUserNickname (String userId , String nickname) {
-    UsersEntity users = usersRepository.findByUserId(userId).orElseThrow( ()  -> new RuntimeException("로그인 유저 정보가 없습니다"));
-      users.setNickname(nickname);
-      return UsersResponseDto.of(usersRepository.save(users));
-  }
-
-  @Transactional
-  public TokenResponse signUp(UserRequest userRequest) {
-    UsersEntity usersEntity =
-        usersRepository.save(
-            UsersEntity.builder()
-                .password(passwordEncoder.encode(userRequest.getUserPw()))
-                .userId(userRequest.getUserId())
-                .build());
-
-    String accessToken = tokenUtils.generateJwtToken(usersEntity);
-    String refreshToken = tokenUtils.saveRefreshToken(usersEntity);
-
-    authRepository.save(
-        AuthEntity.builder().usersEntity(usersEntity).refreshToken(refreshToken).build());
-
-    return TokenResponse.builder().ACCESS_TOKEN(accessToken).REFRESH_TOKEN(refreshToken).build();
-  }
-
-  @Transactional
-  public TokenResponse signIn(UserRequest userRequest) throws Exception {
-    UsersEntity usersEntity =
-        usersRepository
-            .findByUserId(userRequest.getUserId())
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-    AuthEntity authEntity =
-        authRepository
-            .findByUsersEntityId(usersEntity.getId())
-            .orElseThrow(() -> new IllegalArgumentException("Token 이 존재하지 않습니다."));
-    if (!passwordEncoder.matches(userRequest.getUserPw(), usersEntity.getPassword())) {
-      throw new Exception("비밀번호가 일치하지 않습니다.");
-    }
-    String accessToken = "";
-    String refreshToken = authEntity.getRefreshToken();
-
-    if (tokenUtils.isValidRefreshToken(refreshToken)) {
-      accessToken = tokenUtils.generateJwtToken(authEntity.getUsersEntity());
-      return TokenResponse.builder()
-          .ACCESS_TOKEN(accessToken)
-          .REFRESH_TOKEN(authEntity.getRefreshToken())
-          .build();
-    } else {
-      accessToken = tokenUtils.generateJwtToken(authEntity.getUsersEntity());
-      refreshToken = tokenUtils.saveRefreshToken(usersEntity);
-      authEntity.refreshUpdate(refreshToken);
+    @Transactional
+    public UsersResponseDto changeUserNickname (String userId , String nickname) {
+        UsersEntity users = usersRepository.findByUserId(userId).orElseThrow( ()  -> new RuntimeException("로그인 유저 정보가 없습니다"));
+        users.setNickname(nickname);
+        return UsersResponseDto.of(usersRepository.save(users));
     }
 
-    return TokenResponse.builder().ACCESS_TOKEN(accessToken).REFRESH_TOKEN(refreshToken).build();
-  }
+    @Transactional
+    public UsersResponseDto changePassword(String userId , String exPassword , String newPassword) {
+        UsersEntity  users = usersRepository.findByUserId(userId).orElseThrow( ()-> new RuntimeException("로그인 유저 정보가 없습니다 "));
+        if (!passwordEncoder.matches(exPassword , users.getPassword())) {
+            throw  new RuntimeException("비밀번호가 맞지 않습니다");
+        }
+        users.setPassword(passwordEncoder.encode(newPassword));
+        return UsersResponseDto.of(usersRepository.save(users));
+    }
 
-//  public UserRequest changeUserPassword(String userId , String exPw , String newPW) {
-//      Optional<UsersEntity> users = usersRepository.findByUserId(userId);
-//
-//      users.orElseThrow().setPw(passwordEncoder.encode(newPW));
-//
-//  }
+    public List<UsersEntity> findUsers() {
+        return usersRepository.findAll();
+    }
 
-  public List<UsersEntity> findUsers() {
-    return usersRepository.findAll();
-  }
 
 }
