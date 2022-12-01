@@ -11,17 +11,19 @@ const CreateAccountForm = () => {
     const authCtx  = useContext(AuthContext);
     const userIdInputRef = useRef<HTMLInputElement>(null);
     const passwordInputRef = useRef<HTMLInputElement>(null);
-
+    const nicknameInputRef = useRef<HTMLInputElement>(null);
 
     const submitHandler = (event : React.FormEvent) => {
 
         event.preventDefault();
 
+
         const enteredUserId = userIdInputRef.current!.value;
         const enteredPassword = passwordInputRef.current!.value;
+        const enteredNickname = nicknameInputRef.current!.value;
 
 
-        authCtx.signup(enteredUserId , enteredPassword);
+        authCtx.signup(enteredUserId , enteredPassword , enteredNickname);
 
         if (authCtx.isSuccess) {
             return navigate("/" , {replace : true});
@@ -29,18 +31,22 @@ const CreateAccountForm = () => {
     }
 
     return (
-        <section className="">
+        <section >
             <h1>Create Account</h1>
             <form onSubmit={submitHandler}>
-                <div className="">
+                <div >
                     <label htmlFor="userId">Your ID</label>
                     <input type="text" id="userId" required ref={userIdInputRef} />
                 </div>
-                <div className="">
+                <div >
                     <label htmlFor="password">Your password</label>
-                    <input type="password" id="password" required ref={userIdInputRef} />
+                    <input type="password" id="password" required ref={passwordInputRef} />
                 </div>
-                <div className="">
+                <div >
+                    <label htmlFor="nickname">NickName</label>
+                    <input type="text" id="text" required ref={nicknameInputRef} />
+                </div>
+                <div >
                     <button type="submit">Submit</button>
                 </div>
             </form>

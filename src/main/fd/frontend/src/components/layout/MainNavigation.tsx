@@ -45,9 +45,9 @@ const MainNavigation = () => {
             <Link to='/'><div className="">Home</div></Link>
             <nav>
                 <ul>
-                    <li>{!isLogin && <Link to='login'>Login</Link>}</li>
-                    <li>{!isLogin && <Link to='signup'>Sign-Up</Link>}</li>
-                    <li>{isLogin && <Link to='profile'>{userId}</Link>}</li>
+                    <li>{!isLogin && <Link to='/user/login'>Login</Link>}</li>
+                    <li>{!isLogin && <Link to='/user/signup'>Sign-Up</Link>}</li>
+                    <li>{isLogin && <Link to='/user/profile'>{userId}</Link>}</li>
                     <li>{isLogin && <button onClick={toggleLogoutHandler}>Logout</button>}</li>
                 </ul>
             </nav>

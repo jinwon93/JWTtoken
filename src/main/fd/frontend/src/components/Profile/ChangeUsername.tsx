@@ -26,7 +26,16 @@ const ChangeUsername = () => {
 
     return (
 
-        <div>new!!! </div>
+        <form onSubmit={submitHandler}>
+
+            <div>
+                <label htmlFor='username'>New NickName</label>
+                <input type='text' id='username' minLength={3} required ref={nicknameInputRef} />
+            </div>
+            <div>
+                <button type='submit'>Change Username</button>
+            </div>
+        </form>
     )
 }
 

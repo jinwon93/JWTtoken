@@ -35,7 +35,7 @@ public class AuthService {
     UsersEntity usersEntity =
         usersRepository.save(
             UsersEntity.builder()
-                .password(passwordEncoder.encode(userRequest.getUserPw()))
+                .password(passwordEncoder.encode(userRequest.getUserPassword()))
                 .userId(userRequest.getUserId())
                 .build());
 
@@ -58,7 +58,7 @@ public class AuthService {
         authRepository
             .findByUsersEntityId(usersEntity.getId())
             .orElseThrow(() -> new IllegalArgumentException("Token 이 존재하지 않습니다."));
-    if (!passwordEncoder.matches(userRequest.getUserPw(), usersEntity.getPassword())) {
+    if (!passwordEncoder.matches(userRequest.getUserPassword(), usersEntity.getPassword())) {
       throw new Exception("비밀번호가 일치하지 않습니다.");
     }
     String accessToken = "";
