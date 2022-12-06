@@ -2,7 +2,7 @@ package com.token.domains.article.service;
 
 
 import com.token.domains.article.entity.Article;
-import com.token.domains.article.entity.ArticleRepository;
+import com.token.domains.article.repository.ArticleRepository;
 import com.token.domains.users.application.dto.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
